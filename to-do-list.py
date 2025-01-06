@@ -1,19 +1,36 @@
+import json
 from colorama import Fore, Back, Style, init
 
-# Initialize colorama
+
+
 init(autoreset=True)
 
-# Get user input for the name
 name = input(Fore.RED + "Please enter your Full Name: ")
 
-print(Fore.GREEN + f"Welcome, {name}\n")
+print(Fore.GREEN + f"Welcome , {name}\n")
 
-# Initialize the list
+def userDataStoring():
+    if not mylist:
+        print("Your task list is empty. No data is store")
+        return 
+    try:
+        with open(name + '-dataFile.txt', 'w') as userDataFile:
+          jsonData = json.dumps(mylist)
+          userDataFile.write(jsonData)
+          print(Fore.YELLOW + f"data is converted in json format successFully {jsonData}" )  
+    except FileNotFoundError:
+        print("The file was not found.")
+    except PermissionError:
+        print("You don't have permission to access this file.")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+
+
 mylist = []
 
-# Function to display the list
+
 def disList():
-    listDis = input(Fore.BLUE + "Do you want to see your Goal List (Yes/No): ").lower()
+    listDis = input(Fore.WHITE + "Do you want to see your Goal List (Yes/No): ").lower()
     if listDis == 'yes':
         print(Fore.YELLOW + "\nYour Goal List:")
         for i, k in enumerate(mylist):
@@ -58,6 +75,9 @@ def mainTask():
     disList()
     delTask()
     disList()
+    userDataStoring()
+
+
 
 # Run the main task
 mainTask()
